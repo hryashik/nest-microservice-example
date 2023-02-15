@@ -1,5 +1,5 @@
 {
-  "name": "gateway",
+  "name": "user",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -25,8 +25,6 @@
     "@nestjs/core": "^9.0.0",
     "@nestjs/microservices": "^9.3.9",
     "@nestjs/platform-express": "^9.0.0",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "kafkajs": "^2.2.3",
     "reflect-metadata": "^0.1.13",
