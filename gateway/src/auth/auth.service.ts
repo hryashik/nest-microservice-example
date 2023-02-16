@@ -1,5 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { catchError, throwError } from 'rxjs';
 import { CreateUserDto } from 'src/dto/create-user.dto';
 
 @Injectable()
@@ -14,6 +15,10 @@ export class AuthService {
   }
 
   createUser(createUserDto: CreateUserDto) {
-    return this.authClient.send('create_user', createUserDto);
+    return this.authClient
+      .send('create_user', createUserDto)
+      .pipe(
+        catchError((error) => throwError(() => new ForbiddenException(error))),
+      );
   }
 }
