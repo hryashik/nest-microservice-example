@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { MathService } from './math.service';
 
 export interface IDto {
@@ -9,7 +10,7 @@ export interface IDto {
 export class AppController {
   constructor(private readonly mathService: MathService) {}
 
-  @Post()
+  @MessagePattern('add')
   async getHello(@Body() dto: IDto) {
     return this.mathService.accumulate(dto)
   }
