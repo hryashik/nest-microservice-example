@@ -32,12 +32,14 @@ export class AuthService {
   }
 
   async login(dto: LoginDto) {
+    //find the user in db
     const user = await this.prisma.user.findFirst({
       where: {
         email: dto.email,
       },
     });
-    const validatePw = await argon.verify(user.hash, dto.password);
+    //validate the password
+    const validatePw: boolean = await argon.verify(user.hash, dto.password);
     if (!user || !validatePw) throw new RpcException('Incorrect credentials');
 
     const token = await this.createToken(dto.email);
