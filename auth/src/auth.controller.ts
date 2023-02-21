@@ -6,10 +6,13 @@ import { SignupDto } from './dto/signup.dto';
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+  
   @MessagePattern('signup')
-  signup(@Payload() data: SignupDto) {
-    return this.authService.signup(data);
+  signup(@Payload() dto: SignupDto) {
+    return this.authService.signup(dto);
   }
   @MessagePattern('login')
-  login(@Payload() data: SignupDto) {}
+  login(@Payload() dto: SignupDto) {
+    return this.authService.login(dto)
+  }
 }
