@@ -9,6 +9,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { catchError, throwError } from 'rxjs';
 import { LoginDto } from './dto/login.dto';
 import { SignupDto } from './dto/signup.dto';
+import { Authorization } from './services/decorators/auth.decorator';
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -23,6 +24,7 @@ export class AuthController {
         catchError((error) => throwError(() => new ForbiddenException(error))),
       );
   }
+
   @Post('login')
   login(@Body() dto: LoginDto) {
     return this.authServiceClient
