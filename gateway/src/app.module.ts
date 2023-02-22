@@ -4,9 +4,10 @@ import { ClientProxyFactory } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
 import { ConfigService } from './services/config/config.service';
 import { AuthGuard } from './services/guards/auth.guard';
+import { TaskController } from './task.controller';
 
 @Module({
-  controllers: [AuthController],
+  controllers: [AuthController, TaskController],
   providers: [
     ConfigService,
     {
@@ -16,6 +17,13 @@ import { AuthGuard } from './services/guards/auth.guard';
         return ClientProxyFactory.create(authServiceOptions);
       },
       inject: [ConfigService],
+    },
+    {
+      provide: 'TASK_SERVICE',
+      useFactory: (configService: ConfigService) => {
+        const taskServiceOptions = new ConfigService().get('taskService');
+        return ClientProxyFactory.create(taskServiceOptions);
+      },
     },
     {
       provide: APP_GUARD,
