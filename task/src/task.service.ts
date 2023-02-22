@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Task } from '@prisma/client';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { DeleteTaskDto } from './dto/delete-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from './prisma/prisma.service';
 
@@ -45,6 +46,28 @@ export class TaskService {
         throw new Error('User have no this task (id)');
       }
     } catch (error) {
+      throw new RpcException('Incorrect task id');
+    }
+  }
+
+  async deleteTask(dto: DeleteTaskDto) {
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: {
+          userId: dto.userId,
+        },
+      });
+      if (!!tasks.find((el) => el.id === 25)) {
+        return await this.prisma.task.delete({
+          where: {
+            id: dto.id,
+          },
+        });
+      }
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new RpcException(`Task id ${dto.id} does not exist`)
+      }
       throw new RpcException('Incorrect task id');
     }
   }

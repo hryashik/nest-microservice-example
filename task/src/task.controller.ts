@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { DeleteTaskDto } from './dto/delete-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { TaskService } from './task.service';
 
@@ -14,6 +15,10 @@ export class taskController {
   }
   @MessagePattern('update_task')
   updateTask(@Payload() dto: UpdateTaskDto) {
-    return this.taskService.updateTask(dto)
+    return this.taskService.updateTask(dto);
+  }
+  @MessagePattern('delete_task')
+  deleteTask(@Payload() dto: DeleteTaskDto) {
+    return this.taskService.deleteTask(dto);
   }
 }
