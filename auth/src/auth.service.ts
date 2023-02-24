@@ -22,8 +22,10 @@ export class AuthService {
           hash,
         },
       });
-      delete user.hash;
-      return user;
+      const token = await this.createToken(user.id);
+      return {
+        access_token: token,
+      };
     } catch (error) {
       if (error.code === 'P2002') {
         throw new RpcException('Credentials is taken');
@@ -42,13 +44,37 @@ export class AuthService {
     const validatePw: boolean = await argon.verify(user.hash, dto.password);
     if (!user || !validatePw) throw new RpcException('Incorrect credentials');
 
-    const token = await this.createToken(dto.email);
+    const token = await this.createToken(user.id);
     return {
       access_token: token,
     };
   }
 
-  async createToken(userId: string) {
+  async getUserById(userId: number) {
+    try {
+      return await this.prisma.user.findUnique({
+        where: {
+          id: userId
+        },
+        select: {
+          email: true,
+          hash: false,
+          createdAt: true,
+          updatedAt: true,
+          id: true,
+        },
+      })
+    } catch (error) {
+      throw new RpcException('Incorrect userId')
+    }
+  }
+
+  async createToken(userId: number) {
     return this.jwtService.sign({ userId });
+  }
+  async decodeToken(token: string) {
+    const user = this.jwtService.decode(token);
+    console.log(user)
+    return user;
   }
 }

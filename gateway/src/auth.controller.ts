@@ -2,13 +2,18 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  Get,
+  Headers,
   Inject,
   Post,
+  Req,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { Request } from 'express';
 import { catchError, throwError } from 'rxjs';
-import { LoginDto } from './dto/login.dto';
-import { SignupDto } from './dto/signup.dto';
+import { IAuthorizedRequest } from './interfaces/common/authorized-request.interface';
+import { LoginDto } from './interfaces/dto/login.dto';
+import { SignupDto } from './interfaces/dto/signup.dto';
 import { Authorization } from './services/decorators/auth.decorator';
 @Controller('auth')
 export class AuthController {
@@ -32,5 +37,12 @@ export class AuthController {
       .pipe(
         catchError((error) => throwError(() => new ForbiddenException(error))),
       );
+  }
+
+  @Authorization(true)
+  @Get('test')
+  test(@Req() req: IAuthorizedRequest) {
+    console.log(req.user)
+    return 1111
   }
 }

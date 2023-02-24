@@ -14,10 +14,11 @@ import {
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, throwError } from 'rxjs';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { DeleteTaskDto } from './dto/delete-task.dto';
-import { GetAllTasksDto } from './dto/get-all-tasks';
-import { UpdateTaskDto } from './dto/update-task.dto';
+import { CreateTaskDto } from './interfaces/dto/create-task.dto';
+import { DeleteTaskDto } from './interfaces/dto/delete-task.dto';
+import { GetAllTasksDto } from './interfaces/dto/get-all-tasks';
+import { UpdateTaskDto } from './interfaces/dto/update-task.dto';
+import { Authorization } from './services/decorators/auth.decorator';
 
 @Controller('task')
 export class TaskController {
