@@ -59,13 +59,13 @@ export class TaskService {
           userId: dto.userId,
         },
       });
-      if (!!tasks.find((el) => el.id === 25)) {
+      if (tasks.find((el) => el.id === dto.id)) {
         return await this.prisma.task.delete({
           where: {
             id: dto.id,
           },
         });
-      }
+      } else throw new RpcException('Incorrect taskId');
     } catch (error) {
       if (error.code === 'P2025') {
         throw new RpcException(`Task id ${dto.id} does not exist`);

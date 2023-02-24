@@ -11,7 +11,7 @@ export class ConfigService {
       transport: Transport.TCP,
       options: {
         host: 'localhost',
-        port: 3001,
+        port: process.env.PORT
       },
     };
   }

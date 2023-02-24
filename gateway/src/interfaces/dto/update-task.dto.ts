@@ -7,14 +7,6 @@ import {
 } from 'class-validator';
 
 export class UpdateTaskDto {
-  @IsNotEmpty()
-  @IsNumber()
-  id: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  userId: number;
-
   @IsOptional()
   @IsString()
   title?: string;

@@ -29,7 +29,6 @@ export class AuthGuard implements CanActivate {
     );
     // throw exception if user or token not found
     if (!token || !userTokenInfo) throw new UnauthorizedException();
-    console.log(userTokenInfo.userId);
     // get a user from auth service
     const userInfo = await firstValueFrom(
       this.authServiceClient.send('get_user_by_id', userTokenInfo.userId),

@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ClientProxyFactory } from '@nestjs/microservices';
 import { AuthController } from './auth.controller';
 import { ConfigService } from './services/config/config.service';
+import { DefaultIfEmptyInterceptor } from './services/exceptions/defaultEmpty.interceptor';
 import { AuthGuard } from './services/guards/auth.guard';
 import { TaskController } from './task.controller';
 
@@ -29,6 +30,10 @@ import { TaskController } from './task.controller';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DefaultIfEmptyInterceptor
+    }
   ],
 })
 export class AppModule {}

@@ -38,11 +38,4 @@ export class AuthController {
         catchError((error) => throwError(() => new ForbiddenException(error))),
       );
   }
-
-  @Authorization(true)
-  @Get('test')
-  test(@Req() req: IAuthorizedRequest) {
-    console.log(req.user)
-    return 1111
-  }
 }
